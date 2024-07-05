@@ -1,2 +1,10 @@
 # Medium2.0
-Medium is an open platform where readers find dynamic thinking, and where expert and undiscovered voices can share their writing on any topic.
+We’ll be building medium in the following stack <br>
+-> React in the frontend <br>
+-> Cloudflare workers in the backend <br>
+-> zod as the validation library, type inference for the frontend types <br>
+-> Typescript as the language <br>
+-> Prisma as the ORM, with connection pooling <br>
+-> Postgres as the database <br>
+-> jwt for authentication
+ 
