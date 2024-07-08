@@ -2,8 +2,24 @@ import { Hono } from 'hono'
 
 const app = new Hono()
 
-app.get('/', (c) => {
+app.post('/api/v1/singup', (c) => {
+  return c.text('signup route')
+})
+
+app.post('/api/v1/singin', (c) => {
+  return c.text('signin route')
+})
+
+app.post('/api/v1/blog', (c) => {
   return c.text('Hello Hono!')
+})
+app.put('/api/v1/blog', (c) => {
+  return c.text('Hello Hono!')
+})
+app.get('/api/v1/blog/:id', (c) => {
+  const id = c.req.param('id')
+  console.log(id);
+  return c.text('get blog route')
 })
 
 export default app
