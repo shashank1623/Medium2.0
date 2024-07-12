@@ -1,13 +1,36 @@
 import { Hono } from 'hono'
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
-import { jwt, sign } from 'hono/jwt'
+import { jwt, sign, verify } from 'hono/jwt'
 const app = new Hono<{
   Bindings : {
     DATABASE_URL : string,
     JWT_SECRET : string
   }
 }>()
+
+app.use('/api/v1/blog/*', async (c,next)=>{
+  // get the header
+  //verify the header
+  // if the header is correct , we can proceed
+  // if not , we reutrn the user 403 status code
+  const header = c.req.header('authorization') || "";
+  if(!header){
+    c.status(401);
+    return c.json({error : "unauthorized"})
+  }
+  const token = header.split(" ")[1];
+
+
+  const response = await verify(token,c.env.JWT_SECRET);
+  if(response.id){
+    next();
+  }else{
+    c.status(403);
+    return c.json({error : "unauthorized"})
+  }
+})
+
 
 app.get('/', (c)=>{
 
@@ -74,6 +97,8 @@ app.post('/api/v1/singin', async (c) => {
     });
   }
 })
+
+
 
 app.post('/api/v1/blog', (c) => {
   return c.text('Hello Hono!')
