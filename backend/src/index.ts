@@ -24,7 +24,7 @@ app.use('/api/v1/blog/*', async (c,next)=>{
 
   const response = await verify(token,c.env.JWT_SECRET);
   if(response.id){
-    next();
+    await next();
   }else{
     c.status(403);
     return c.json({error : "unauthorized"})
