@@ -2,6 +2,8 @@ import { Hono } from 'hono'
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { jwt, sign, verify } from 'hono/jwt'
+import bcrypt from 'bcryptjs';
+
 const app = new Hono<{
   Bindings : {
     DATABASE_URL : string,
@@ -46,12 +48,13 @@ app.post('/api/v1/singup',async (c) => {
   }).$extends(withAccelerate())
 
   const body = await c.req.json();
+  const hashedPassword = await bcrypt.hash(body.password,5);
 
   try{
     const user = await prisma.user.create({
       data : {
         email : body.email,
-        password : body.password
+        password : hashedPassword
       },
     });
 
@@ -87,7 +90,13 @@ app.post('/api/v1/singin', async (c) => {
         error: "user not found",
       });
     }
-
+    const isPasswordValid = await bcrypt.compare(body.password , user.password);
+    if(!isPasswordValid){
+      c.status(403);
+      return c.json({
+        error : "invalid credentials",
+      })
+    }
     const token = await sign({ id: user.id }, c.env.JWT_SECRET);
     return c.json({ jwt : token });
   } catch (e) {
