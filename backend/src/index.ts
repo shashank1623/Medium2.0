@@ -56,7 +56,7 @@ app.post('/api/v1/singup',async (c) => {
   }).$extends(withAccelerate())
 
   const body = await c.req.json();
-  const hashedPassword = await bcrypt.hash(body.password,5);
+  const hashedPassword = await bcrypt.hash(body.password,10);
 
   try{
     const user = await prisma.user.create({
