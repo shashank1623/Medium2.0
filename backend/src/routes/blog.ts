@@ -33,7 +33,7 @@ blogRouter.use('/*', async (c,next)=>{
     if(response.id){
         const userId = String(response.id);
         c.set('userId',userId)
-      await next();
+        await next();
     }else{
       c.status(403);
       return c.json({error : "unauthorized"})
