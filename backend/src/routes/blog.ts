@@ -62,7 +62,7 @@ blogRouter.post('/',async (c)=>{
     })
 })
 
-blogRouter.put('/api/v1/blog', async (c)=>{
+blogRouter.put('/', async (c)=>{
 
     const body = await c.req.json();
     const prisma = new PrismaClient({
