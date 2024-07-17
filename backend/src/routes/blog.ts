@@ -82,7 +82,19 @@ blogRouter.put('/', async (c)=>{
         id : post.id
     })
 })
+//Todo : add pagination
+blogRouter.get('/bulk' , async (c)=>{
+    const prisma = new PrismaClient({
+        datasourceUrl : c.env.DATABASE_URL,
+    }).$extends(withAccelerate())
 
+    const post =  await prisma.post.findMany();
+
+    return c.json({
+        post
+    })
+
+})
 
 blogRouter.get('/:id', async (c)=>{
     const id = await c.req.param("id");
@@ -107,17 +119,5 @@ blogRouter.get('/:id', async (c)=>{
     }
 })
 
-//Todo : add pagination
-blogRouter.get('/bulk' , async (c)=>{
-    const prisma = new PrismaClient({
-        datasourceUrl : c.env.DATABASE_URL,
-    }).$extends(withAccelerate())
 
-    const post =  await prisma.post.findMany();
-
-    return c.json({
-        post
-    })
-
-})
 
