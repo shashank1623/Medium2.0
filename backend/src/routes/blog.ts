@@ -65,22 +65,32 @@ blogRouter.post('/',async (c)=>{
 blogRouter.put('/', async (c)=>{
 
     const body = await c.req.json();
+    console.log(body.id);
+    console.log(body.title);
+    console.log(body.content);  
     const prisma = new PrismaClient({
         datasourceUrl : c.env.DATABASE_URL,
     }).$extends(withAccelerate())
 
-    const post = await prisma.post.update({
-        where : {
-            id : body.id
-        },
-        data : {
-            title : body.title,
-            content : body.content
-        }
-    })
-    return c.json({
-        id : post.id
-    })
+    try{
+        const post = await prisma.post.update({
+            where : {
+                id : body.id
+            },
+            data : {
+                title : body.title,
+                content : body.content
+            }
+        })
+        return c.json({
+            id : post.id
+        })
+    }catch(e){
+        c.status(411);
+        return c.json({
+            message : "Error while fetchinr blog post"
+        })
+    }
 })
 //Todo : add pagination
 blogRouter.get('/bulk' , async (c)=>{
