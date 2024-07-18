@@ -1,0 +1,18 @@
+{
+  "name": "@alias1623/medium-common",
+  "version": "1.0.0",
+  "description": "Common package for medium clone",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "common",
+    "medium"
+  ],
+  "author": "alias1623",
+  "license": "ISC",
+  "dependencies": {
+    "zod": "^3.23.8"
+  }
+}
